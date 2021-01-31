@@ -1,0 +1,1 @@
+ease {0, 1, bounce, 1.75, 'xmod'} -- like this

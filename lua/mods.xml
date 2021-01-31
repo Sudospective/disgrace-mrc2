@@ -1,0 +1,52 @@
+<Mods LoadCommand = "%xero(function(self)
+
+	-- To help Kid with porting --
+	--------------------------------------------------------
+	-- Mods are aliased and auxed for SM in portable.lua. --
+	-- FarDistZ is also set and the aux nodes are scaled. --
+	--------------------------------------------------------
+	if FUCK_EXE then
+		songDir = '.'..GAMESTATE:GetCurrentSong():GetSongDir() -- Change this if you're having issues
+	else
+		songDir = GAMESTATE:GetCurrentSong():GetSongDir()
+	end
+
+	local sanity = loadfile(songDir..'lua/scripts/sanity.lua')
+	if sanity == nil then
+		SCREENMAN:SystemMessage('Unable to locate song directory (mods.xml:9)')
+		return
+	end
+	-- Requires manual coding behavior changes, check portable.lua for instructions.
+	if sanity ~= nil then
+		xero(loadfile(songDir..'lua/scripts/portable.lua'))()
+	end
+
+	for pn = 1, 2 do
+		setupJudgeProxy(PJ[pn], P[pn]:GetChild('Judgment'), pn)
+		setupJudgeProxy(PC[pn], P[pn]:GetChild('Combo'), pn)
+	end
+	for pn = 1, #PP do
+		PP[pn]:SetTarget(P[pn])
+		P[pn]:hidden(1)
+	end
+	-- hope this helps ilu <333 --
+	
+	if sanity ~= nil then
+		kino = xero(loadfile(songDir..'lua/kino.lua'))
+		sudo = xero(loadfile(songDir..'lua/sudo.lua'))
+		kino()
+		sudo()
+	end
+
+	setdefault {1.5, 'xmod', 0, 'straightholds'}
+
+end)"
+Type = "ActorFrame"
+><children>
+	<Layer Type = "ActorProxy" Name = "PC[1]" />
+	<Layer Type = "ActorProxy" Name = "PC[2]" />
+	<Layer Type = "ActorProxy" Name = "PJ[1]" />
+	<Layer Type = "ActorProxy" Name = "PJ[2]" />
+	<Layer Type = "ActorProxy" Name = "PP[1]" />
+	<Layer Type = "ActorProxy" Name = "PP[2]" />
+</children></Mods>
