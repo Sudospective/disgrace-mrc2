@@ -38,15 +38,47 @@
 		sudo()
 	end
 
+	aft(AFT)
+	sprite(AFTSpriteR)
+	sprite(AFTSpriteG)
+	sprite(AFTSpriteB)
+	aftsprite(AFT, AFTSpriteR)
+	aftsprite(AFT, AFTSpriteG)
+	aftsprite(AFT, AFTSpriteB)
+	
+	AFTSpriteR:vibrate()
+	AFTSpriteR:effectmagnitude(2, 0, 0)
+	AFTSpriteG:vibrate()
+	AFTSpriteG:effectmagnitude(2, 0, 0)
+	AFTSpriteB:vibrate()
+	AFTSpriteB:effectmagnitude(2, 0, 0)
+
 	setdefault {1.5, 'xmod', 0, 'straightholds'}
 
 end)"
 Type = "ActorFrame"
 ><children>
+
+	<Layer
+		Type = "Quad"
+		Name = "HideEvent"
+		OnCommand = "%xero(function(self)
+			self:xy(scx, scy)
+			self:zoomto(sw, sh)
+			self:diffuse(0, 0, 0, 1)
+		end)"
+	/>
+
 	<Layer Type = "ActorProxy" Name = "PC[1]" />
 	<Layer Type = "ActorProxy" Name = "PC[2]" />
 	<Layer Type = "ActorProxy" Name = "PJ[1]" />
 	<Layer Type = "ActorProxy" Name = "PJ[2]" />
 	<Layer Type = "ActorProxy" Name = "PP[1]" />
 	<Layer Type = "ActorProxy" Name = "PP[2]" />
+
+	<Layer Type = "ActorFrameTexture" Name = "AFT" />
+	<Layer Type = "Sprite" Name = "AFTSpriteR" />
+	<Layer Type = "Sprite" Name = "AFTSpriteG" />
+	<Layer Type = "Sprite" Name = "AFTSpriteB" />
+
 </children></Mods>
