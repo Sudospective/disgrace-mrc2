@@ -75,11 +75,18 @@ end
 
 local function screenglitch(beat, len)
     func {beat, function()
+        for pn = 1, 2 do
+            P[pn]:vibrate()
+            P[pn]:effectmagnitude(2, 2, 0)
+        end
         AFTSpriteR:effectmagnitude(10, 0, 0)
         AFTSpriteG:effectmagnitude(10, 0, 0)
         AFTSpriteB:effectmagnitude(10, 0, 0)
     end, persist = false}
     func {beat + len, function()
+        for pn = 1, 2 do
+            P[pn]:stopeffect()
+        end
         AFTSpriteR:effectmagnitude(2, 0, 0)
         AFTSpriteG:effectmagnitude(2, 0, 0)
         AFTSpriteB:effectmagnitude(2, 0, 0)
@@ -94,6 +101,43 @@ func {0, function()
     AFTSpriteB:diffuse(0, 0, 1, 0.9)
     AFTSpriteB:blend('add')
 end}
+
+set
+    {0, 50, 'flip', 50, 'reverse', -2500, 'tiny'}
+    {26, 100, 'mini'}
+mirror
+    {0, 0, instant, 160, 'x'}
+    {0, 4, inExpo,
+        0, 'tiny',
+        0, 'flip',
+        0, 'reverse',
+        100, 'cross',
+        200, 'tornado',
+        100, 'tornadoperiod',
+        200, 'tornadoz',
+        50, 'tornadozperiod',
+        200, 'drunk',
+        200, 'tipsy',
+        200, 'zoomz',
+    }
+
+ease
+    {0, 1, outExpo, 100, 'stealth', 100, 'dark'}
+    {2, 30, inSine, 360, 'rotationy', 360, 'rotationx', 360, 'rotationz'}
+    {24, 8, inExpo, 0, 'stealth', 0, 'dark'}
+    {26, 6, inSine, 0, 'mini'}
+add
+    {6, 1, pop, 20, 'arrowpath1'}
+    {8, 1, pop, 20, 'arrowpath3'}
+    {10, 1, pop, 20, 'arrowpath0'}
+    {13.5, 2, pop, 20, 'arrowpath0', -5, 'dark'}
+    {16, 1, pop, 20, 'arrowpath2'}
+    {17.5, 1, pop, 20, 'arrowpath3'}
+    {21, 3, pop, 20, 'arrowpath1', -5, 'dark'}
+    {22.25, 3, bounce, 20, 'arrowpath0'}
+reset {26, 6, outSine, exclude = {'stealth', 'dark', 'rotationx', 'rotationy', 'rotationz'}}
+reset {32, 0, instant}
+
 
 screenslam(32)
 screenslam(40)
@@ -135,25 +179,30 @@ func {60, function()
     end
 end}
 
+screenslam(64)
 screenslam(66)
 screenslam(68)
 screenslam(70)
 screenslam(74)
 screenslam(76)
+screenslam(78)
 
 mirror
     {60, 0, instant, -160, 'x'}
+set
+    {64, 500, 'z', 0, 'mini', -500, 'tiny', 50, 'flip', 50, 'stealth'}
 ease
     {60, 2, outExpo, 0, 'x'}
     {62, 1, inExpo, 200, 'mini'}
-    {63, 1, inExpo, 0, 'mini'}
+    {64, 0.5, outExpo, 0, 'z', 0, 'mini', 0, 'tiny', 0, 'flip', 0, 'stealth'}
+    {63.5, 1, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz'}
     {64, 1, inExpo, 480, 'y'}
 plr = 1
 set
     {65, 0, 'y', 200, 'mini'}
 ease
     {65, 1, inExpo, -100, 'mini', 5, 'rotationz'}
-    {66, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz'}
+    {66, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz', 100, 'arrowpath', 200, 'tornado', 200, 'sawtooth'}
     {66, 2, pop, 150, 'drunk', 150, 'tipsy'}
     {66, 2, inExpo, 480, 'y', 0, 'rotationz'}
 swap
@@ -162,7 +211,7 @@ set
     {69, 0, 'y', 200, 'mini'}
 ease
     {69, 1, inExpo, -100, 'mini', 5, 'rotationz'}
-    {70, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz'}
+    {70, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz', 100, 'arrowpath', 200, 'tornado', 200, 'sawtooth'}
     {70, 2, pop, 150, 'drunk', 150, 'tipsy'}
     {70, 2, inExpo, 480, 'y', 0, 'rotationz'}
 swap
@@ -171,7 +220,7 @@ set
     {72, 0, 'y', 200, 'mini', 10, 'rotationx', -10, 'rotationy', -160, 'rotationz', 100, 'stealth', 100, 'dark'}
 ease
     {73, 1, inExpo, -100, 'mini', 0, 'rotationx', 0, 'rotationy', 5, 'rotationz', 0, 'stealth', 0, 'dark'}
-    {74, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz'}
+    {74, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz', 100, 'arrowpath', 200, 'tornado', 200, 'sawtooth'}
     {74, 2, pop, 150, 'drunk', 150, 'tipsy'}
     {74, 2, inExpo, 480, 'y', 0, 'rotationz'}
 swap
@@ -181,7 +230,7 @@ set
     {67, 0, 'y', 200, 'mini'}
 ease
     {67, 1, inExpo, -100, 'mini', -5, 'rotationz'}
-    {68, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz'}
+    {68, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz', 100, 'arrowpath', 200, 'tornado', 200, 'sawtooth'}
     {68, 2, pop, -150, 'drunk', -150, 'tipsy'}
     {68, 2, inExpo, 480, 'y', 0, 'rotationz'}
 swap
@@ -201,9 +250,10 @@ set
     {75, 0, 'y', 200, 'mini',}
 ease
     {75, 1, inExpo, -100, 'mini', -5, 'rotationz'}
-    {76, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz'}
+    {76, 0.25, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz', 100, 'arrowpath', 200, 'tornado', 200, 'sawtooth'}
     {76, 2, pop, -150, 'drunk', -150, 'tipsy'}
-    {76, 3.5, inExpo, 480, 'y', 0, 'rotationz'}
+    {76, 4, inExpo, 480, 'y', 0, 'rotationz'}
+    {78, 1, pop, -200, 'tiny'}
 swap
     {77, 1, bell, 'dlru'}
     {77.5, 1, inOutExpo, 'rudl'}
@@ -218,17 +268,55 @@ reset {79.95, 0.05, outExpo, plr = 2}
 ease
     {79, 4, bell, 30, 'reverse', -100, 'mini'}
     --{80, 2, inQuad, 95, 'holdstealth'}
-    {81.5, 1, inOutExpo, 2000, 'attenuatex', 2000, 'attenuatez', 100, 'arrowpath', -1000, 'tinyz', 100, 'tornado', 300, 'tornadoperiod', 100, 'tornadoz', 100, 'tornadozperiod', 110, 'brake', 1.5, 'xmod', 400, 'z', 100, 'mini', 250, 'movey', 100, 'dizzyholds', -00, 'reverse', 500, 'zoomz', 15, 'rotationx', -314.15 / 12, 'confusionxoffset'}
-    {80, 1, pop, -400, 'tiny', 15, 'rotationx', 1500, 'parabolaz', 800, 'zoomz', 200, 'zoomy', 100, 'invert'}
-    {81, 1, pop, -400, 'tiny', 15, 'rotationx', 1500, 'parabolaz', 800, 'zoomz', 200, 'zoomy', 100, 'flip'}
-    {82, 6, outExpo, 0, 'tinyz'}
+    {80, 1, pop, -400, 'tiny', 15, 'rotationx', 1500, 'parabolaz', 800, 'zoomz', 200, 'zoomy', 100, 'invert', 200, 'tornado', 200, 'sawtooth'}
+    {81, 1, pop, -400, 'tiny', 15, 'rotationx', 1500, 'parabolaz', 800, 'zoomz', 200, 'zoomy', 100, 'flip', 200, 'tornado', 200, 'sawtooth'}
+    {81.5, 1, inOutExpo, -100, 'split', 2000, 'attenuatex', 2000, 'attenuatez', 100, 'arrowpath', -50, 'holdgirth', -1000, 'tinyz', 100, 'tornado', 300, 'tornadoperiod', 100, 'tornadoz', 100, 'tornadozperiod', 110, 'brake', 1.5, 'xmod', 400, 'z', 100, 'mini', 300, 'movey', 100, 'dizzyholds', 500, 'zoomz', 15, 'rotationx', -314.15 / 12, 'confusionxoffset'}
+    {81.5, 1, inOutExpo, 100, 'reverse', plr = 2}
+    {82, 5, outExpo, 0, 'tinyz'}
+mirror
+    {81.5, 1, inOutExpo, -5, 'rotationy'}
 
-reset {85.5, 1, inOutExpo}
+reset {86.5, 1, inOutExpo}
 
+swap {87, 1, bell, 'dlru'}
+ease
+    {87, 2, inverse, 400, 'tiny', 15, 'rotationx', 1500, 'parabolaz', 400, 'zoomz', 200, 'zoomy', 5000, 'tinyz', 200, 'tornado', 400, 'tornadoperiod', 200, 'drunk', 400, 'drunkperiod'}
+    {87.5, 2, bell, 100, 'reverse'}
+    {88.5, 1, inOutExpo, 2000, 'attenuatex', 2000, 'attenuatez', 100, 'arrowpath', -50, 'holdgirth', -1000, 'tinyz', 100, 'tornado', 300, 'tornadoperiod', 100, 'tornadoz', 100, 'tornadozperiod', 110, 'brake', 1.5, 'xmod', 100, 'mini', 100, 'dizzyholds', 500, 'zoomz', 400, 'z', 100, 'alternate'}
+    {89, 5, outExpo, 0, 'tinyz'}
+    {91.5, 1, inOutExpo, 100, 'split', 100, 'reverse', 0, 'alternate'}
+add
+    {88.5, 1, inOutExpo, -250, 'movey'}
+mirroradd
+    {88.5, 1, inOutExpo, 50, 'centered', 350, 'movey', 0, 'movex', 15, 'rotationx', -314.15 / 12, 'confusionxoffset', -5, 'rotationy'}
+
+reset {93.5, 1, inOutExpo}
+
+func {82, function()
+    HideEvent:decelerate(0.5 * spb)
+    HideEvent:diffuse(0.05, 0, 0.05, 1)
+    HideEvent:sleep(4 * spb)
+    HideEvent:accelerate(0.5 * spb)
+    HideEvent:diffuse(0, 0, 0, 1)
+end, persist = false}
+func {89, function()
+    HideEvent:decelerate(0.5 * spb)
+    HideEvent:diffuse(0.1, 0, 0, 1)
+    HideEvent:sleep(2.25 * spb)
+    HideEvent:accelerate(0.25 * spb)
+    HideEvent:diffuse(0.05, 0.025, 0.025, 1)
+    HideEvent:decelerate(0.25 * spb)
+    HideEvent:diffuse(0, 0.05, 0.05, 1)
+    HideEvent:sleep(1.25 * spb)
+    HideEvent:accelerate(0.5 * spb)
+    HideEvent:diffuse(0, 0, 0, 1)
+end, persist = false}
 
 screenslam(80)
 screenslam(81)
-screenglitch(82, 4)
+screenglitch(82, 5)
+screenslam(88)
+screenglitch(89, 5)
 add
     {144, 1, pop, -30, 'rotationy', 800, 'zoomz'}
     {145, 1, pop, 30, 'rotationy', 800, 'zoomz'}
@@ -243,14 +331,6 @@ add
 
 screenslam(192)
 
-func {192, function()
-    AFTSpriteR:vibrate()
-    AFTSpriteR:effectmagnitude(2, 0, 0)
-    AFTSpriteG:vibrate()
-    AFTSpriteG:effectmagnitude(2, 0, 0)
-    AFTSpriteB:vibrate()
-    AFTSpriteB:effectmagnitude(2, 0, 0)
-end}
 set
     {192, 400, 'z', 1000, 'zoomz', 60, 'rotationx', 1000, 'parabolaz', 100, 'dizzyholds', 0, 'straightholds', 300, 'dizzy'}
     {192, 80, 'dark', 100, 'hidenoteflashes', 50, 'hidden', -90, 'hiddenoffset', 100, 'halgun'}
