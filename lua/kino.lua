@@ -1,15 +1,20 @@
+-- thanks xero for forgetting to do this
+setdefault {100, 'zoomz'}
+
 ----------------
 -- spellcards --
 ----------------
 
-card {32, 60, 'buildup 1', 10, '#BFBF4C'}
+card {32, 60, 'buildup 1', 5, '#BFBF4C'}
 card {64, 128, 'DROP I', 10, '#EAEC6D'}
 
 card {128, 144, 'abandon all hope', 10, '#7BACF6'}
-card {144, 152, 'bounce bounce revolution', 6, '#627BB4'}
+card {144, 152, 'bounce bounce revolution', 6, '#00CC00'}
 card {159, 160, 'did you hit it?', 6, '#4A4A62'}
 
-card {162, 188, 'calm down a moment', 6, '#7BACF6'}
+card {162, 188, 'calm down a moment', 4, '#627BB4'}
+card {192, 224, 'd-pad or not d-pad?', 9, '#BFBF4C'}
+card {224, 252, 'buildup 2', 8, '#627BB4'}
 
 card {256, 320, 'DROP II Returns: Electric Boogaloo (Again!)', 8, '#7BACF6'}
 
@@ -20,6 +25,9 @@ card {256, 320, 'DROP II Returns: Electric Boogaloo (Again!)', 8, '#7BACF6'}
 local sin, cos = math.sin, math.cos
 local PI = math.pi
 local sqrt = math.sqrt
+local exp = math.exp
+local min, max = math.min, math.max
+local gmatch = string.gmatch or string.gfind
 
 local function _q(t)
 	return t < 1 and 1 or 0
@@ -42,17 +50,29 @@ local function vibro(t)
 	end
 end
 
+local function vibrox(t)
+	if t == 0 then
+		for pn = 1, 2 do
+			P[pn]:stopeffect()
+		end
+	else
+		for pn = 1, 2 do
+			P[pn]:vibrate()
+			P[pn]:effectmagnitude(t, 0, 0)
+		end
+	end
+end
+
 local function aftvibro(t)
-	--AFTSpriteR:x2((math.random() * 2 - 1) * t)
-	--AFTSpriteR:y2((math.random() * 2 - 1) * t)
-	--AFTSpriteG:x2((math.random() * 2 - 1) * t)
-	--AFTSpriteG:y2((math.random() * 2 - 1) * t)
-	--AFTSpriteB:x2((math.random() * 2 - 1) * t)
-	--AFTSpriteB:y2((math.random() * 2 - 1) * t)
-	
 	AFTSpriteR:effectmagnitude(t + 2, t, 0)
 	AFTSpriteG:effectmagnitude(t + 2, t, 0)
 	AFTSpriteB:effectmagnitude(t + 2, t, 0)
+end
+
+local function aftvibrox(t)
+	AFTSpriteR:effectmagnitude(t + 2, 0, 0)
+	AFTSpriteG:effectmagnitude(t + 2, 0, 0)
+	AFTSpriteB:effectmagnitude(t + 2, 0, 0)
 end
 
 local function aftxoffset(t)
@@ -68,9 +88,27 @@ local function aftyoffset(t)
 end
 
 local function aftzoom(t)
-	AFTSpriteR:zoom(1 + t * 0.5)
-	AFTSpriteG:zoom(1 + t)
-	AFTSpriteB:zoom(1 + t * 1.5)
+	AFTSpriteR:zoom(exp(-t))
+	AFTSpriteB:zoom(exp(t))
+end
+
+local function _aftunhide() AFT:hidden(0) end
+local function _afthide() AFT:hidden(1) end
+
+local function aftpause(b, l)
+	func {b, _aftunhide; persist = false}
+	func {b + 0.2, _afthide; persist = false}
+	func {b + l, _aftunhide}
+end
+
+local function coveramt(t)
+	HideBehindAFT:diffusealpha(t)
+end
+
+local function aftamt(t)
+	AFTSpriteR:diffusealpha(t)
+	AFTSpriteG:diffusealpha(t)
+	AFTSpriteB:diffusealpha(t)
 end
 
 ----------------------------------------
@@ -285,7 +323,7 @@ add {176, 2, impulse[0.5], -600, 'tiny'}
 
 ease {187, 5, inQuart, 0.05, 'xmod', 0, 'brake', 50, 'stealth', 0, 'drunk', 0, 'tipsy', 100, 'centered', 760, 'z'}
 
-func {187, 5, inQuart, 100, aftvibro}
+func {187, 5, inQuart, 100, aftvibro; persist = false}
 
 for col = 0, 3 do
 	local mul = col - 1.5
@@ -294,18 +332,78 @@ for col = 0, 3 do
 	ease {187, 5, inQuart, 0, 'bumpyx'..col}
 end
 
-reset {192, exclude = {'stealth'}}
+set {184, 90, 'hideholds'}
+ease {188, 4, linear, 100, 'hideholds'}
+
+reset {192, exclude = {'stealth', 'hideholds'}}
 ease {192, 2, outQuad, 0, 'stealth'}
 
 -------------------------------------
 -- some extras on beats 192 to 224 --
 -------------------------------------
 
-set {192, 100, 'hideholds'}
+plr = 1
 for b = 192, 216, 4 do
-	ease {b, 4, flip(outQuad), 80, 'hideholds'}
+	ease
+		{b, 4, flip(outQuad), 50, 'hideholds'}
+		{b, 2, flip(outQuart), -4000, 'straightholds'}
 end
-ease {216, 8, inOutQuart, 0, 'hideholds'}
+ease {216.05, 7.9, inOutQuart, 0, 'hideholds'}
+plr = nil
+
+---------------------------------
+-- second buildup (224 to 252) --
+---------------------------------
+
+ease {224.05, 4, outQuad, 0.5, 'xmod'}
+set {224.05, 100, 'hidemines'}
+
+for i, b in ipairs {232, 240, 242, 244, 246, 248, 249, 250, 251}
+do
+	local l = (i > 5) and 1 or 2
+	
+	if i ~= 2 then
+		ease {b - 1, 1, tap, i * -40 + 100, 'mini'}
+	end
+	ease
+		{b - 1, 1, inBack, i * -50, 'mini'}
+		{b, l, flip(outQuad), 1, 'hidemines'}
+	func
+		{b, l, outQuad, 40, 0, aftxoffset}
+		{b, l, outQuad, 10, 0, aftvibrox}
+end
+
+do
+	local j = 0
+	local swaps = {[0] = 'ldur', 'dlru', 'rudl', 'urld'}
+	local s = '.---.---.---.---.---.---.---.---'
+	       .. '.---.---.---.---.---.---.-...-.-'
+	       .. '.---.---.---.---.---.---.---.---'
+	       .. '.-.-.---.-.-.-------------------'
+	       .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
+	       .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
+	       .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
+	
+	for _i, _ in gmatch(s, '()(%.)') do
+		local i = _i - 1
+		local b = 224 + i / 8
+		local sw = swaps[j % 4]
+		swap {b, 0, instant, sw}
+		j = j + 1
+	end
+end
+
+set
+	{238, 10000, 'tandrunkspeed', 500, 'tandrunkspacing'}
+ease
+	{238, 0.5, outQuart, 1.5, 'xmod', 30, 'rotationx', 20, 'y', -500, 'mini', 50, 'flip'}
+	{238, 1, flip(linear), 40, 'tandrunk'}
+	{239, 1, inQuad, 0.5, 'xmod', 0, 'rotationx', 0, 'y', 0, 'flip', 0, 'tandrunk'}
+
+ease {248, 4, inQuad, 1.5, 'xmod'}
+ease {251, 1, inQuart, 200, 'mini'}
+set {251.5, 1.5, 'xmod', 0, 'mini', 0, 'hidemines'}
+swap {251.5, 0, instant, 'ldur'}
 
 -------------------------------------
 -- before the drop 2, (252 to 256) --
@@ -345,7 +443,7 @@ end
 
 do
 	local m = 1
-	for b = 258, 286, 4 do
+	for b = 258, 302, 4 do
 		zbeat(b, -400 * m)
 		m = -m
 	end
@@ -360,7 +458,8 @@ ease {257.5, 1, inOutQuart, 0, 'tiny'}
 set {258, -99, 'waveperiod'}
 for b = 258, 262, 2 do
 	ease {b, 1, flip(linear), 400, 'wave', 800, 'bumpy'}
-	func {b, 1, outQuad, 64, 0, aftvibro}
+	func {b, 1, outQuad, 64, 0, aftvibrox}
+	func {b, 1, outQuad, 32, 0, aftxoffset}
 end
 set {264, 0, 'waveperiod'}
 
@@ -384,6 +483,7 @@ do
 			local offset = (pn - 1.5) * 0.15
 			plr = pn
 			ease
+				{b + offset, 2, bounce, -10 * m, 'rotationz'}
 				{b - 0.5 + offset, 1, inverse, 1600 * m, 'drunk'}
 				{b + 0.5 + offset, 1, inverse, 1600 * m, 'tipsy'}
 				{b - 0.5 + offset, 1, spike, -1600, 'tinyx'}
@@ -399,27 +499,51 @@ ease
 	{271, 0.5, bounce, -30, 'rotationz', -100, 'skewx'}
 	{271.5, 0.5, bounce, 30, 'rotationz', 100, 'skewx'}
 
-rand.seed(7741)
-for b = 274, 277.5, 0.5 do
+ease
+	{272, 0.5, outQuart, 100, 'invert'}
+	{272.5, 0.5, outQuart, 0, 'invert'}
+	{273, 0.5, outQuart, 100, 'invert'}
+	{273.25, 0.5, outQuart, 0, 'invert', 100, 'flip'}
+	{273.75, 0.25, outQuad, 0, 'flip'}
+
+for i = 0, 7 do
+	local b = 274 + i * 0.5
+	
+	rand.seed(7741 + i)
+	local rx = rand.float(-160, 160)
+	
+	rand.seed(1116 + i * 8)
+	local rr, rg, rb = rand.float(), rand.float(), rand.float()
+	local colormul = 0.2 / max(max(rr, rg), rb)
+	rr, rg, rb = rr * colormul, rg * colormul, rb * colormul
+	
 	ease
 		{b, 0.5, linear, 75, 'centered2'}
 		{b, 0.5, outQuad, 100, 'stealth', 100, 'dark'}
 	set
-		{b, rand.float(-160, 160), 'x'}
+		{b, rx, 'x'}
 		{b + 0.5, 0, 'centered2', 0, 'stealth', 0, 'dark', (b + 0.5) % 2 * PI * 100, 'confusionoffset'}
-	func {b, 0.5, linear, 256, aftxoffset}
+	
+	func {b, 0.5, linear,
+		function(t)
+			local q = 1 - t
+			HideEvent:diffuse(rr * q, rg * q, rb * q, 1)
+			aftxoffset(t * 256)
+		end;
+	persist = false}
 end
+
 set {278, 0, 'x'}
-func {278, function(self) aftxoffset(0) end}
+func {278, function(self) aftxoffset(0); HideEvent:diffuse(0, 0, 0, 1) end}
 
 ease
-	{279, 0.1, linear, 30, 'centered', 20, 'flip', 200, 'zoom'}
-	{280, 0.2, linear, 0, 'centered', 0, 'flip', 100, 'zoom', 0, 'x', 0, 'rotationz', 0, 'confusionoffset'}
+	{279, 0.2, linear, 30, 'centered', 20, 'flip', 200, 'zoom', 2, 'xmod'}
+	{280, 0.2, linear, 0, 'centered', 0, 'flip', 100, 'zoom', 1.5, 'xmod', 0, 'x', 0, 'rotationz', 0, 'confusionoffset'}
 mirror {279, 0.2, linear, -32, 'x', -45, 'rotationz', PI * 25, 'confusionoffset'}
 
 func
-	{279, function() vibro(32) end}
-	{280, function() vibro(0) end}
+	{279, function() vibro(32); HideEvent:linear(0.05); HideEvent:diffuse(0.4, 0, 0, 1) end; persist = false}
+	{280, function() vibro(0); HideEvent:linear(0.05); HideEvent:diffuse(0, 0, 0, 1) end; persist = false}
 
 set {280, -97, 'squareperiod'}
 ease {280, 1, outQuart, 600, 'square', 100, 'stealth'}
@@ -450,6 +574,146 @@ func
 	{287, 1, outQuad, 64, 0, aftvibro}
 
 reset {288}
+
+func {288, 2, linear, 128, 0, vibrox}
+func {288, 2, linear, 64, 0, aftvibrox}
+
+set
+	{288, 50, 'grain'}
+	{plr = 1; 288, 8000, 'tandrunkspeed'}
+	{plr = 2; 288, 8100, 'tandrunkspeed'}
+	{290, 0, 'tandrunkspeed', 0, 'grain'}
+mirror
+	{288, 2, flip(inQuad), 20, 'tandrunk'}
+	--{288.75, 1, spike, 800, 'tandrunk'}
+ease
+	{288.25, 2, flip(inOutQuad), -8000, 'drunkoffset'}
+	{288.25, 2, spike, 2000, 'drunk'}
+	{289.25, 1, outQuart, 100, 'drunk'}
+
+set {290, -99, 'waveperiod'}
+for b = 290, 294, 2 do
+	ease {b, 1, flip(linear), 400, 'wave', 800, 'bumpy'}
+	func {b, 1, outQuad, 64, 0, aftvibrox}
+	func {b, 1, outQuad, 32, 0, aftxoffset}
+end
+set {298, 0, 'waveperiod'}
+
+ease
+	{plr = 1; 291, 0.25, outQuad, -128, 'x', 200, 'zoomx'}
+	{plr = 1; 291.5, 0.25, outQuad, 0, 'x', 100, 'zoomx'}
+	{plr = 2; 291, 0.25, outQuad, 100, 'flip', 100, 'reverse'}
+	{plr = 2; 291.5, 0.25, outQuad, 0, 'flip', 1, 'reverse'}
+	{plr = 1; 293, 0.25, outQuad, 128, 'x', 200, 'zoomx'}
+	{plr = 1; 293.5, 0.25, outQuad, 0, 'x', 100, 'zoomx'}
+	{plr = 2; 293, 0.25, outQuad, 100, 'flip', 100, 'reverse'}
+	{plr = 2; 293.5, 0.25, outQuad, 0, 'flip', 0, 'reverse'}
+	{294.5, 0.25, outQuad, -50, 'skewx', 200, 'zoomx'}
+	{295, 0.25, outQuad, 200, 'skewx', 100, 'zoomx', 200, 'zoomy'}
+	{295.5, 0.25, outQuad, 0, 'skewx', 100, 'zoomy'}
+
+do
+	local m = 1
+	for b = 296, 300, 2 do
+		for pn = 1, 2 do
+			local offset = (pn - 1.5) * 0.15
+			plr = pn
+			ease
+				{b + offset, 2, bounce, 10 * m, 'rotationz'}
+				{b - 0.5 + offset, 1, inverse, -1600 * m, 'drunk'}
+				{b - 0.5 + offset, 1, inOutSine, -100 * m, 'drunk'}
+				{b + 0.5 + offset, 1, inverse, 1600 * m, 'tipsy'}
+				{b - 0.5 + offset, 1, spike, -1600, 'tinyx'}
+				{b + 0.5 + offset, 1, spike, -1600, 'tinyy'}
+		end
+		m = -m
+	end
+end
+plr = nil
+
+ease {302, 2, outQuad, 0, 'drunk'}
+
+add {302, 2, bounce, 100, 'zoomx', -75, 'zoomy'}
+do
+	local m = 1
+	for b = 302, 303.5, 0.5 do
+		ease {b, 0.5, bounce, 50 * m, 'skewx'}
+		m = -m
+	end
+end
+
+reset {304}
+ease {304, 0.5, outQuart, 100, 'invert'}
+ease {304.5, 0.5, outQuart, 0, 'invert'}
+
+aftpause(306, 1.5)
+aftpause(307.5, 2.5)
+aftpause(310, 1.5)
+
+func
+	{304, 1, linear, 0.8, 1, coveramt}
+	{304, 1, linear, 0.9, 0, aftamt}
+	{306, 0.5, linear, 1, 1, aftamt}
+	{306.5, 1, linear, 1, 0, aftamt}
+	{307.5, 1.5, linear, 1, 1, aftamt}
+	{309, 1, linear, 1, 0, aftamt}
+	{310, 2, linear, 1, 1, aftamt}
+	
+	{306, function() HideEvent:diffuse(0.3, 0, 0, 1) end; persist = false}
+	{307.5, function() HideEvent:diffuse(0, 0.3, 0, 1) end; persist = false}
+	{310, function() HideEvent:diffuse(0, 0, 0.3, 1) end; persist = false}
+	{311.5, function() HideEvent:diffuse(0, 0, 0, 1) end}
+	
+	{311, 0.5, outQuart, 1, 0, 
+		function(t)
+			AFTSpriteR:zoomx(t)
+			AFTSpriteG:zoomx(t)
+			AFTSpriteB:zoomx(t)
+			AFTSpriteR:zoomy(1.125 / (t + 0.125))
+			AFTSpriteG:zoomy(1.125 / (t + 0.125))
+			AFTSpriteB:zoomy(1.125 / (t + 0.125))
+		end
+	}
+	{311.5, 0.5, outQuart, 0, 1, 
+		function(t)
+			AFTSpriteR:zoomx(1)
+			AFTSpriteG:zoomx(1)
+			AFTSpriteB:zoomx(1)
+
+			AFTSpriteR:zoomy(t)
+			AFTSpriteG:zoomy(t)
+			AFTSpriteB:zoomy(t)
+		end
+	}
+	{312, 1, linear, 1, 0.8, coveramt}
+	{312, 1, linear, 1, 0.9, aftamt}
+
+set
+	{306 - 0.1, 100, 'halgun', -160, 'x', -40, 'rotationx', 20, 'rotationy'}
+	{307.5 - 0.1, 0, 'flip', 100, 'invert', 160, 'x', 40, 'rotationx', 20, 'rotationy'}
+	{310 - 0.1, 100, 'flip', 0, 'invert', 100, 'reverse', 0, 'x', -40, 'rotationx', -20, 'rotationy'}
+	{310.5 - 0.1, 0, 'flip', 0, 'invert', 0, 'reverse', 0, 'x', 0, 'rotationx', 0, 'rotationy'}
+	{312, 0, 'halgun'}
+
+do
+	local m = 1
+	for i = 0, 6 do
+		local b = 312 + i
+		local q = (7 - i) / 7
+		ease
+			{b, 1, flip(outQuad), 1.5 * (1 - q) + 0.01 * q, 'xmod'}
+			{b, 1, pop, 200 * q * m, 'drunk'}
+		m = -m
+	end
+end
+
+add
+	{318, 2, spike, 20, 'zoomx'}
+	{318.5, 1, spike, 8080, 'zoomx'}
+
+func {318, 2, spike, 400, aftxoffset}
+
+reset {320}
 
 
 

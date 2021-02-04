@@ -77,6 +77,15 @@ Type = "ActorFrame"
 	<Layer Type = "ActorProxy" Name = "PP[2]" />
 
 	<Layer Type = "ActorFrameTexture" Name = "AFT" />
+	<Layer
+		Type = "Quad"
+		Name = "HideBehindAFT"
+		LoadCommand = "%xero(function(self)
+			self:xy(scx, scy)
+			self:zoomto(sw * 2, sh * 2)
+			self:diffuse(0, 0, 0, 0.8)
+		end)"
+	/>
 	<Layer Type = "Sprite" Name = "AFTSpriteR" />
 	<Layer Type = "Sprite" Name = "AFTSpriteG" />
 	<Layer Type = "Sprite" Name = "AFTSpriteB" />
