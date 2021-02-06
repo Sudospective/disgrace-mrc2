@@ -18,7 +18,7 @@ card {224, 252, 'buildup 2', 8, '#627BB4'}
 
 card {256, 320, 'DROP II Returns: Electric Boogaloo (Again!)', 8, '#7BACF6'}
 card {320, 351, 'e', 8, '#EAEC6D'}
-card {351.02, 351.98, '', 0, '#000000'}
+card {351.02, 351.98, '', 0, {0.005, 0.005, 0.005, 0}}
 
 card {352, 432, 'spiral of madness', 8, '#627BB4'}
 
@@ -157,6 +157,7 @@ set {48, 0, 'longboy'}
 --------------------------------------
 
 set {120, 100, 'hidemines', 100, 'stealthpastreceptors'}
+set {128, 100, 'hidemines', 100, 'stealthpastreceptors'}
 
 --	ease {128, 1, outQuart, 0, "zoomy"}
 --		{128, 1, outQuart, 0, "zoomy"}
@@ -406,19 +407,19 @@ end
 do
 	local j = 0
 	local swaps = {[0] = 'ldur', 'dlru', 'rudl', 'urld'}
-	local s = '.---.---.---.---.---.---.---.---'
-	       .. '.---.---.---.---.---.---.-...-.-'
-	       .. '.---.---.---.---.---.---.---.---'
-	       .. '.-.-.---.-.-.-------------------'
-	       .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
-	       .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
-	       .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
+	local pat = '.---.---.---.---.---.---.---.---'
+	         .. '.---.---.---.---.---.---.-...-.-'
+	         .. '.---.---.---.---.---.---.---.---'
+	         .. '.-.-.---.-.-.-------------------'
+	         .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
+	         .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
+	         .. '.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-'
 	
-	for _i, _ in gmatch(s, '()(%.)') do
+	for _i, _ in gmatch(pat, '()(%.)') do
 		local i = _i - 1
 		local b = 224 + i / 8
-		local sw = swaps[j % 4]
-		swap {b, 0, instant, sw}
+		local s = swaps[j % 4]
+		swap {b, 0, instant, s}
 		j = j + 1
 	end
 end
@@ -804,27 +805,28 @@ local function spline2(t)
 	return t * 25600 + 6400, t * t * 1625 * PI
 end
 
-local function splinestealth(t)
-	return outQuart(t) * 400 + 200, t * 90
-end
-
 func
 	{351, function() coveramt(1) aftamt(0) end; persist = false}
 	{352, function() coveramt(1) aftamt(1) end}
 
 reset {352}
-set {352,
-	16, 'xmod', 155 / 8, 'cmod',
-	75, 'brake',
-	50, 'flip', 50, 'reverse',
-	50, 'zoom', 100, 'tinyz',
-	50, 'dark',
-	100, 'halgun',
-	100, 'stealthtype',
-	100, 'spiralholds', 100, 'dizzyholds', 100, 'grain', 100, 'ztest',
-	-99, 'spiralxperiod', -99, 'spiralyperiod',
-	400, 'drawsize', -100, 'drawsizeback',
-}
+set
+	{352,
+		16, 'xmod', 155 / 8, 'cmod',
+		85, 'brake',
+		50, 'flip', 50, 'reverse',
+		50, 'zoom', 100, 'tinyz',
+		50, 'dark',
+		100, 'halgun',
+		90, 'sudden', -50, 'suddenoffset',
+		100, 'stealthtype',
+		100, 'hidemines',
+		100, 'spiralholds', 100, 'dizzyholds', 100, 'grain', 100, 'ztest',
+		-99, 'spiralxperiod', -99, 'spiralyperiod',
+		400, 'drawsize', -100, 'drawsizeback',
+	}
+	{416, 0, 'hidemines'}
+
 mirror {352, 0, instant, 50, 'spiralx', 50, 'spiraly'}
 ease
 	{352, 80, linear, -4000, 'spiralxoffset', -4000, 'spiralyoffset'}
@@ -838,7 +840,6 @@ func {351.5,
 		funcspline('X', 32, spline0pos, 3)
 		funcspline('Z', 32, spline1)
 		funcspline('RotZ', 32, spline2)
-		funcspline('Stealth', 1, splinestealth)
 	end
 }
 
@@ -849,7 +850,7 @@ func {352, 432, function()
 end}
 
 ease
-	{408, 8, linear, 0, 'arrowpath'}
+	{408, 8, linear, 0, 'arrowpath', 100, 'sudden'}
 	{408, 8, inOutSine, 0, 'spiralx', 0, 'spiraly'}
 	{408, 8, outQuart, -100, 'spiralxperiod', -100, 'spiralyperiod'}
 
@@ -859,27 +860,31 @@ aux 'kinoaftwaggle'
 set {352, 100, 'kinoaftwaggle'}
 ease {408, 8, linear, 0, 'kinoaftwaggle'}
 
-local function _waggle(actor, b, amt, offset)
+local function waggle(actor, b, amt, offset)
 	local q = (b + offset) % 16 * 0.25 * math.pi
-	actor:skewx(cos(q) * amt * 0.25)
-	actor:zoomy(1 + sin(q) * amt * 0.25)
-	actor:rotationz(sin(q * 0.5) * amt * 2.5)
+	actor:skewx(-sin(q) * amt * 0.25)
+	actor:zoomx(1 + sin(q) * amt * 0.25)
+	actor:zoomy(1 + cos(q) * amt * 0.25)
+	actor:rotationz(sin(q * 0.5) * amt * 5)
 end
 
 func {352, 80, function(b, poptions)
 	local amt = poptions[1].kinoaftwaggle / 100
-	_waggle(AFTSpriteR, b, amt, 0.2)
-	_waggle(AFTSpriteG, b, amt, 0)
-	_waggle(AFTSpriteB, b, amt, -0.2)
+	waggle(AFTSpriteR, b, amt, 0.15)
+	waggle(AFTSpriteG, b, amt, 0)
+	waggle(AFTSpriteB, b, amt, -0.15)
 	
 	if b >= 384 then
-		_waggle(AFTSpriteRecursive, b, amt * 0.5, 0)
+		waggle(AFTSpriteRecursive, b, amt * 0.5, 0)
 	end
 end}
 
+func {352, 4, outQuart, 100, 0, aftxoffset}
+func {384, 4, outQuart, 100, 0, aftxoffset}
+
 func {352, function()
 	AFTSpriteRecursive:hidden(0)
-	AFTSpriteRecursive:zoom(1.02)
+	AFTSpriteRecursive:zoom(1)
 	AFTSpriteRecursive:diffusealpha(0.85)
 end}
 

@@ -95,37 +95,77 @@ reset {32, 0, instant}
 
 screenslam(32)
 screenslam(40)
+screenslam(46)
 screenslam(48)
 screenslam(50)
 screenslam(52)
 screenslam(54)
+screenglitch(56, 4)
 screenslam(56)
 screenslam(57)
 screenslam(58)
 screenslam(59)
 
+for beat = 32, 42 do
+    ease
+        {beat, 0.5, pop, 100, 'tipsy'}
+        {beat + 0.5, 0.5, pop, -100, 'tipsy'}
+end
+for beat = 48, 59.5, 0.5 do
+    ease
+        {beat, 0.25, bounce, 75, 'tipsy'}
+        {beat + 0.25, 0.25, bounce, -75, 'tipsy'}
+end
 set
-    {32, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {40, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {48, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {50, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {52, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {54, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {56, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {57, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {58, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
-    {59, 100, 'invert', -100, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
+    {32, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
+    {40, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz'}
+    {48, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', -15, 'rotationy', -15, 'rotationz'}
+    {50, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', 15, 'rotationy', 15, 'rotationz'}
+    {52, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', -15, 'rotationy', -15, 'rotationz'}
+    {54, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', 15, 'rotationy', 15, 'rotationz'}
+    {56, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', -15, 'rotationy', -15, 'rotationz'}
+    {57, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', 15, 'rotationy', 15, 'rotationz'}
+    {58, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', -15, 'rotationy', -15, 'rotationz'}
+    {59, 100, 'invert', -300, 'tiny', 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 800, 'zoomz', 15, 'rotationy', 15, 'rotationz'}
 ease
     {32, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
+    {39.75, 0.5, pop, -100, 'drunk'}
     {40, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {48, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {50, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {52, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {54, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {56, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {57, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {58, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
-    {59, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
+
+    {43, 0.5, pop, 100, 'tipsy'}
+    {43.25, 0.5, pop, 100, 'drunk'}
+    {44, 0.5, pop, 100, 'tipsy'}
+    {44.25, 0.5, pop, 100, 'drunk'}
+    {44.75, 0.5, pop, -100, 'drunk'}
+    {45, 0.5, pop, 100, 'drunk'}
+
+    {45, 2, spike, -500, 'tiny'}
+    {45.5, 1, spike, -1000, 'tiny'}
+    {45.5, 2, bell, -100, 'mini', 10, 'flip'}
+    {46.75, 1, bell, 0.75, 'xmod', 100, 'invert'}
+
+    {48, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+    {50, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+    {52, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+    {54, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+    {56, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+    {57, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+    {58, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+    {59, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz', 0, 'rotationy', 0, 'rotationz'}
+mirror
+    {45.5, 0.5, inExpo, 160, 'x'}
+    {47, 1, inExpo, 0, 'x'}
+
+swap
+    {48, 0, instant, 'dlru'}
+    {50, 0, instant, 'uldr'}
+    {52, 0, instant, 'rudl'}
+    {54, 0, instant, 'dlru'}
+    {56, 0, instant, 'uldr'}
+    {57, 0, instant, 'rudl'}
+    {58, 0, instant, 'dlru'}
+    {59, 0, instant, 'uldr'}
+    {60, 1, outExpo, 'ldur'}
 
 func {60, function()
     for pn = 1, 2 do
@@ -141,13 +181,25 @@ screenslam(74)
 screenslam(76)
 screenslam(78)
 
+for beat = 60, 62.75, 0.5 do
+    ease {beat, 0.25, bounce, 50, 'drunk', 50, 'tipsy'}
+    ease {beat + 0.25, 0.25, bounce, -50, 'drunk', -50, 'tipsy'}
+end
+
 mirror
+    {56, 2, pop, 50, 'movex'}
+    {57, 2, pop, 50, 'movex'}
+    {58, 2, pop, 50, 'movex'}
+    {59, 2, pop, 50, 'movex'}
     {60, 0, instant, -160, 'x'}
 set
     {64, 500, 'z', 0, 'mini', -500, 'tiny', 50, 'flip', 50, 'stealth'}
 ease
-    {60, 2, outExpo, 0, 'x'}
-    {62, 1, inExpo, 200, 'mini'}
+    {60, 2, pop, 50, 'movex'}
+    {60, 1.5, bounce, -150, 'movex', -30, 'rotationy'}
+    {61.5, 1.5, bounce, 75, 'movex', 30, 'rotationy'}
+    {60, 1, outExpo, 0, 'x'}
+    {62, 2, inOutExpo, 200, 'mini', 360, 'rotationz'}
     {64, 0.5, outExpo, 0, 'z', 0, 'mini', 0, 'tiny', 0, 'flip', 0, 'stealth'}
     {63.5, 1, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz'}
     {64, 1, inExpo, 480, 'y'}
@@ -486,7 +538,7 @@ ease
     {220, 4, linear, 0, 'stealth', plr = 1}
     {216, 4, linear, 100, 'stealth', 100, 'holdstealth', 100, 'hideholds', 100, 'dark', plr = 2}
 add
-    {216, 8, inOutQuad, 314.15 * 4, 'confusionzoffset'}
+    {216.05, 7.95, inOutQuad, 314.15 * 4, 'confusionzoffset'}
 reset {216, 8, inOutQuad, exclude = {'rotationy', 'confusionzoffset', 'dizzy', 'stealth', 'holdstealth', 'dark', 'halgun', 'hide', 'hideholds', 'hidenoteflash', 'hidden', 'hiddenoffset', 'wave'}, plr = 1}
 
 func {214, function()
@@ -504,10 +556,13 @@ ease
     {224, 4, outExpo, 0, 'invert', 0, 'tiny', 0, 'rotationx', 0, 'confusionxoffset', 0, 'parabolaz', 100, 'zoomz'}
 
 screenslam(320)
+screenglitch(322, 0.5)
 screenslam(323)
 screenslam(323.5)
 screenslam(325.5)
+screenslam(326, 0.5)
 screenslam(328)
+screenslam(330, 0.5)
 screenslam(331)
 screenglitch(332, 0.5)
 screenslam(332.5)
@@ -598,9 +653,23 @@ func {334, function()
 end, persist = false}
 
 func {344, function()
+    for pn = 1, 2 do
+        PJ[pn]:hidden(1)
+        PC[pn]:hidden(1)
+    end
+    AFTSpriteRecursive:hidden(0)
+    AFTSpriteRecursive:zoom(1.2)
+    AFTSpriteRecursive:diffusealpha(0.8)
     HideEvent:diffuse(0.3, 0, 0, 1)
     HideEvent:sleep(6.5 * spb)
     HideEvent:diffuse(0, 0, 0, 1)
+end, persist = false}
+func {350, function()
+    for pn = 1, 2 do
+        PJ[pn]:hidden(0)
+        PC[pn]:hidden(0)
+    end
+    AFTSpriteRecursive:hidden(1)
 end, persist = false}
 
 screenslam(344)
@@ -623,6 +692,8 @@ plr = 1
 plr = nil
 set
     {336, 100, 'dizzyholds'}
+    {344, 100, 'halgun'}
+    {350, 0, 'halgun'}
 ease
     {335, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', 30, 'rotationx', -30, 'rotationy', 1600, 'zoomz'}
     {336, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', 30, 'rotationx', 30, 'rotationy', 1600, 'zoomz'}
