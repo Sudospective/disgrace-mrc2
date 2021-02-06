@@ -45,13 +45,17 @@
 	aftsprite(AFT, AFTSpriteR)
 	aftsprite(AFT, AFTSpriteG)
 	aftsprite(AFT, AFTSpriteB)
-	
+
 	AFTSpriteR:vibrate()
 	AFTSpriteR:effectmagnitude(2, 0, 0)
 	AFTSpriteG:vibrate()
 	AFTSpriteG:effectmagnitude(2, 0, 0)
 	AFTSpriteB:vibrate()
 	AFTSpriteB:effectmagnitude(2, 0, 0)
+
+	sprite(AFTSpriteRecursive)
+	aftsprite(AFT, AFTSpriteRecursive)
+	AFTSpriteRecursive:hidden(1)
 
 	setdefault {1.5, 'xmod', 0, 'straightholds'}
 
@@ -68,6 +72,8 @@ Type = "ActorFrame"
 			self:diffuse(0, 0, 0, 1)
 		end)"
 	/>
+
+	<Layer Type = "Sprite" Name = "AFTSpriteRecursive" />
 
 	<Layer Type = "ActorProxy" Name = "PC[1]" />
 	<Layer Type = "ActorProxy" Name = "PC[2]" />

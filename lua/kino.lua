@@ -17,6 +17,10 @@ card {192, 224, 'd-pad or not d-pad?', 9, '#BFBF4C'}
 card {224, 252, 'buildup 2', 8, '#627BB4'}
 
 card {256, 320, 'DROP II Returns: Electric Boogaloo (Again!)', 8, '#7BACF6'}
+card {320, 351, 'e', 8, '#EAEC6D'}
+card {351.02, 351.98, '', 0, '#000000'}
+
+card {352, 432, 'spiral of madness', 8, '#627BB4'}
 
 -------------------------
 -- functions and stuff --
@@ -28,6 +32,10 @@ local sqrt = math.sqrt
 local exp = math.exp
 local min, max = math.min, math.max
 local gmatch = string.gmatch or string.gfind
+
+local ystandard = THEME:GetMetric('Player', 'ReceptorArrowsYStandard')
+local yreverse = THEME:GetMetric('Player', 'ReceptorArrowsYReverse')
+local yorig = (ystandard + yreverse) * 0.5
 
 local function _q(t)
 	return t < 1 and 1 or 0
@@ -111,6 +119,18 @@ local function aftamt(t)
 	AFTSpriteB:diffusealpha(t)
 end
 
+-----------------------
+-- initial functions --
+-----------------------
+
+func {0,
+	function()
+		for pn = 1, 2 do
+			P[pn]:fov(360 / math.pi * math.atan(math.tan(math.pi * (1 / (360 / 45))) * (sw / sh) * 0.75))
+		end
+	end
+}
+
 ----------------------------------------
 -- nodes and custom modifiers go here --
 ----------------------------------------
@@ -138,12 +158,13 @@ set {48, 0, 'longboy'}
 
 set {120, 100, 'hidemines', 100, 'stealthpastreceptors'}
 
-ease {128, 1, outQuart, 0, "zoomy"}
-	{128, 1, outQuart, 0, "zoomy"}
-
-set {129, 100, "zoomy", 200, "sudden"}
+--	ease {128, 1, outQuart, 0, "zoomy"}
+--		{128, 1, outQuart, 0, "zoomy"}
+--	
+set {128, 200, "sudden"}
 	{144, 0, "sudden"}
-	{plr = 2; 129, 100, "reverse"}
+	{plr = 2; 128, 100, "reverse"}
+ease {128, 1, flip(outQuad), -800, "mini", 50, "flip", 50, "reverse"}
 
 do
 	local m = 1
@@ -153,20 +174,14 @@ do
 	end
 end
 
-ease {129, 1, flip(outQuart), 200, "tiny"}
-
-func {129, function()
-	for pn = 1, 2 do
-		P[pn]:x(scx)
-	end
-end}
+-- ease {129, 1, flip(outQuart), 200, "tiny"}
 
 for _, b in ipairs {128, 130, 131.5, 136, 138.5} do
 	func {b, 1, outQuad, 128, 0, vibro}
 	func {b, 1, outQuad, 16, 0, aftvibro}
 end
 
-func {129, 15, function(b, o)
+func {128, 16, function(b, o)
 	for pn = 1, 2 do
 		local mul = b < 142 and (3 - pn * 2) or 1
 
@@ -186,7 +201,7 @@ end}
 do
 	local m = 1
 	for b = 129, 129.75, 0.25 do
-		ease {b, 0.25, bounce, 200 * m, "drunk"}
+		ease {b, 0.25, bounce, 400 * m, "drunk"}
 		m = -m
 	end
 end
@@ -335,8 +350,23 @@ end
 set {184, 90, 'hideholds'}
 ease {188, 4, linear, 100, 'hideholds'}
 
-reset {192, exclude = {'stealth', 'hideholds'}}
+reset {192, exclude = {'stealth'}}
 ease {192, 2, outQuad, 0, 'stealth'}
+
+func {160, function()
+	AFTSpriteRecursive:hidden(0)
+	AFTSpriteRecursive:diffusealpha(0.9)
+end}
+
+func {176, 4, outQuad, 1.2, 1,
+	function(t)
+		AFTSpriteRecursive:zoom(t)
+	end
+}
+
+func {192, function()
+	AFTSpriteRecursive:hidden(1)
+end}
 
 -------------------------------------
 -- some extras on beats 192 to 224 --
@@ -396,9 +426,15 @@ end
 set
 	{238, 10000, 'tandrunkspeed', 500, 'tandrunkspacing'}
 ease
-	{238, 0.5, outQuart, 1.5, 'xmod', 30, 'rotationx', 20, 'y', -500, 'mini', 50, 'flip'}
-	{238, 1, flip(linear), 40, 'tandrunk'}
+	{237.51, 0.49, inBack, 1.5, 'xmod', 30, 'rotationx', 20, 'y', -500, 'mini', 50, 'flip'}
+	{238, 1, flip(linear), 100, 'tandrunk'}
 	{239, 1, inQuad, 0.5, 'xmod', 0, 'rotationx', 0, 'y', 0, 'flip', 0, 'tandrunk'}
+
+func {238, function()
+	HideEvent:diffuse(0.5, 0, 0, 1)
+	HideEvent:sleep(120/155)
+	HideEvent:diffuse(0, 0, 0, 1)
+end; persist = false}
 
 ease {248, 4, inQuad, 1.5, 'xmod'}
 ease {251, 1, inQuart, 200, 'mini'}
@@ -514,7 +550,7 @@ for i = 0, 7 do
 	
 	rand.seed(1116 + i * 8)
 	local rr, rg, rb = rand.float(), rand.float(), rand.float()
-	local colormul = 0.2 / max(max(rr, rg), rb)
+	local colormul = 0.4 / max(max(rr, rg), rb)
 	rr, rg, rb = rr * colormul, rg * colormul, rb * colormul
 	
 	ease
@@ -542,15 +578,22 @@ ease
 mirror {279, 0.2, linear, -32, 'x', -45, 'rotationz', PI * 25, 'confusionoffset'}
 
 func
-	{279, function() vibro(32); HideEvent:linear(0.05); HideEvent:diffuse(0.4, 0, 0, 1) end; persist = false}
+	{279, function() vibro(32); HideEvent:linear(0.05); HideEvent:diffuse(0.5, 0, 0, 1) end; persist = false}
 	{280, function() vibro(0); HideEvent:linear(0.05); HideEvent:diffuse(0, 0, 0, 1) end; persist = false}
 
 set {280, -97, 'squareperiod'}
-ease {280, 1, outQuart, 600, 'square', 100, 'stealth'}
+mirror {280, 1, outQuart, 500, 'square', 10, 'rotationz', 10, 'rotationx'}
+ease {280, 1, outQuart, 100, 'stealth', 100, 'dark'}
+
+rand.seed(800)
 for i = 0, 3 do
 	local b = 281 + i * 0.25
 	local amt = (3 - i) * 0.25
-	set {b, 600 * amt, 'square', 100 * amt, 'stealth'}
+	mirror {b,
+		0, instant, 500 * amt, 'square',
+		rand.float(-1, 1) * 10 * amt, 'rotationz',
+		rand.float(-1, 1) * 10 * amt, 'rotationx'}
+	set {b, 100 * amt, 'stealth', 50 * amt + 50, 'dark'}
 end
 
 ease
@@ -714,6 +757,140 @@ add
 func {318, 2, spike, 400, aftxoffset}
 
 reset {320}
+
+-------------------------
+-- finale (352 to end) --
+-- = oooh splines... = --
+-------------------------
+
+local _allcolumns = {0, 1, 2, 3}
+
+local function funcspline(stype, n, f, col)
+	if n > 39 then n = 39 end
+	
+	if type(col) == 'number' then
+		col = {col}
+	elseif col == nil then
+		col = _allcolumns
+	end
+	
+	local splinestr = 'Set' .. stype .. 'Spline'
+	for pn = 1, 2 do
+		local a = P[pn]
+		for _, c in ipairs(col) do
+			for i = 0, n do
+				local o, v = f(i / n)
+				a[splinestr](a, i, c, v, o, -1)
+			end
+		end
+	end
+end
+
+local function spline0pos(t)
+	local o = t * t
+	return o * 800, o * (1 - o) ^ 3 * 6400
+end
+
+local function spline0neg(t)
+	local o = t * t
+	return o * 800, o * (1 - o) ^ 3 * -6400
+end
+
+local function spline1(t)
+	return inSine(t) * 200, inSine(1 - t) * 1000
+end
+
+local function spline2(t)
+	return t * 25600 + 6400, t * t * 1625 * PI
+end
+
+local function splinestealth(t)
+	return outQuart(t) * 400 + 200, t * 90
+end
+
+func
+	{351, function() coveramt(1) aftamt(0) end; persist = false}
+	{352, function() coveramt(1) aftamt(1) end}
+
+reset {352}
+set {352,
+	16, 'xmod', 155 / 8, 'cmod',
+	75, 'brake',
+	50, 'flip', 50, 'reverse',
+	50, 'zoom', 100, 'tinyz',
+	50, 'dark',
+	100, 'halgun',
+	100, 'stealthtype',
+	100, 'spiralholds', 100, 'dizzyholds', 100, 'grain', 100, 'ztest',
+	-99, 'spiralxperiod', -99, 'spiralyperiod',
+	400, 'drawsize', -100, 'drawsizeback',
+}
+mirror {352, 0, instant, 50, 'spiralx', 50, 'spiraly'}
+ease
+	{352, 80, linear, -4000, 'spiralxoffset', -4000, 'spiralyoffset'}
+	{352, 8, outQuart, 100, 'dark'}
+
+func {351.5,
+	function()
+		funcspline('X', 32, spline0neg, 0)
+		funcspline('Y', 32, spline0pos, 1)
+		funcspline('Y', 32, spline0neg, 2)
+		funcspline('X', 32, spline0pos, 3)
+		funcspline('Z', 32, spline1)
+		funcspline('RotZ', 32, spline2)
+		funcspline('Stealth', 1, splinestealth)
+	end
+}
+
+func {352, 432, function()
+	for pn = 1, 2 do
+		P[pn]:y(scy - yorig)
+	end
+end}
+
+ease
+	{408, 8, linear, 0, 'arrowpath'}
+	{408, 8, inOutSine, 0, 'spiralx', 0, 'spiraly'}
+	{408, 8, outQuart, -100, 'spiralxperiod', -100, 'spiralyperiod'}
+
+-- aft effects for finale
+
+aux 'kinoaftwaggle'
+set {352, 100, 'kinoaftwaggle'}
+ease {408, 8, linear, 0, 'kinoaftwaggle'}
+
+local function _waggle(actor, b, amt, offset)
+	local q = (b + offset) % 16 * 0.25 * math.pi
+	actor:skewx(cos(q) * amt * 0.25)
+	actor:zoomy(1 + sin(q) * amt * 0.25)
+	actor:rotationz(sin(q * 0.5) * amt * 2.5)
+end
+
+func {352, 80, function(b, poptions)
+	local amt = poptions[1].kinoaftwaggle / 100
+	_waggle(AFTSpriteR, b, amt, 0.2)
+	_waggle(AFTSpriteG, b, amt, 0)
+	_waggle(AFTSpriteB, b, amt, -0.2)
+	
+	if b >= 384 then
+		_waggle(AFTSpriteRecursive, b, amt * 0.5, 0)
+	end
+end}
+
+func {352, function()
+	AFTSpriteRecursive:hidden(0)
+	AFTSpriteRecursive:zoom(1.02)
+	AFTSpriteRecursive:diffusealpha(0.85)
+end}
+
+func {408, 8, linear, 1, 0, function(t)
+	AFTSpriteRecursive:diffusealpha(t ^ 0.25 * 0.85)
+end}
+
+
+
+
+
 
 
 

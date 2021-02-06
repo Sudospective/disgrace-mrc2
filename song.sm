@@ -6,26 +6,32 @@
 #ARTISTTRANSLIT:;
 #GENRE:;
 #CREDIT:;
-#MUSIC:song.ogg;
 #BANNER:;
 #BACKGROUND:;
+#LYRICSPATH:;
 #CDTITLE:;
-#SAMPLESTART:0.000;
-#SAMPLELENGTH:0.000;
+#MUSIC:song.ogg;
+#OFFSET:-0.079;
+#SAMPLESTART:24.878;
+#SAMPLELENGTH:12.000;
 #SELECTABLE:YES;
-#OFFSET:-0.088;
 #BPMS:0.000=155.000;
 #STOPS:;
 #BGCHANGES:;
+
+//The majority of simfile scripts and visual effects are stored here.
 #FGCHANGES:0.000=template/main.xml=1.000=0=0=1=====,
 ;
-//--------------- dance-single - [SPOILERS] ----------------
+
+#KEYSOUNDS:;
+
+//---------------dance-single - [SPOILERS]----------------
 #NOTES:
      dance-single:
      [SPOILERS]:
      Challenge:
      1:
-     0,0,0,0,0:
+     0.433,0.645,0.251,0.550,0.051:
 0000
 0000
 0000
@@ -812,11 +818,11 @@ M400
 ,
 3001
 0000
-0010
+1000
 0000
 ,
 0100
-1000
+0010
 0001
 0000
 ,
@@ -867,3 +873,4 @@ M000
 0000
 0000
 ;
+
