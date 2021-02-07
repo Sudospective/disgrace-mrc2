@@ -193,7 +193,7 @@ mirror
     {59, 2, pop, 50, 'movex'}
     {60, 0, instant, -160, 'x'}
 set
-    {64, 500, 'z', 0, 'mini', -500, 'tiny', 50, 'flip', 50, 'stealth'}
+    {64, 500, 'z', 0, 'mini', -500, 'tiny', 50, 'flip', 50, 'stealth', 0, 'rotationz', 0, 'confusionzoffset'}
 ease
     {60, 2, pop, 50, 'movex'}
     {60, 1.5, bounce, -150, 'movex', -30, 'rotationy'}
@@ -299,15 +299,15 @@ ease
     {89, 5, outExpo, 0, 'tinyz'}
     {91.5, 1, inOutExpo, -50, 'tipsy', -50, 'drunk', 100, 'split', 100, 'reverse', 0, 'alternate'}
     {93, 2, spike, 200, 'mini'}
-    {94, 1, bell, -7500, 'tinyz'}
+    {94.5, 1, bell, -7500, 'tinyz'}
     {94, 1, inExpo, 100, 'reverse'}
     {95, 1, inExpo, 0, 'reverse'}
 add
     {88.5, 1, inOutExpo, -250, 'movey'}
     {94.25, 1, bell, 100, 'flip'}
 mirroradd
-    {94, 1, bell, -10, 'rotationy', -75, 'movex'}
     {88.5, 1, inOutExpo, 50, 'centered', 350, 'movey', 0, 'movex', 15, 'rotationx', -314.15 / 12, 'confusionxoffset', -5, 'rotationy'}
+    {94, 1, bell, -10, 'rotationy', -75, 'movex'}
 
 reset {93.5, 1, inOutExpo}
 
@@ -347,7 +347,7 @@ add
     {95, 1, bounce, 50, 'brake'}
     {96, 8, linear, 360 * 2, 'rotationy', -314.15 * 4, 'confusionyoffset'}
     {96, 1, outExpo, 25, 'flip'}
-    {97, 2, inOutExpo, -50, 'flip', 0.75, 'xmod', 100, 'dizzyholds'}
+    {97, 2, inOutExpo, -50, 'flip', 0.6, 'xmod', 100, 'dizzyholds'}
     {97, 1, inExpo, -25, 'flip'}
     {98, 0.5, pop, 150, 'flip'}
     {98, 1, pop, 200, 'wave', 100, 'brake'}
@@ -391,6 +391,7 @@ ease
 plr = nil
 ease
     {95, 2, spike, -1500, 'tiny', 1000, 'z'}
+    {95, 1, inExpo, 0.75, 'xmod'}
     {96, 2, bounce, 200, 'attenuatex'}
     {95, 4, bell, 210, 'mini'}
     {98, 0.5, pop, 45, 'rotationx', -314.15 / 4, 'confusionxoffset', 1500, 'parabolaz', 400, 'zoomz', 100, 'arrowpath', 200, 'tornado', 200, 'sawtooth'}
@@ -530,9 +531,9 @@ set
     {192, 20, 'stealth', plr = 1}
     {192, 90, 'stealth', 100, 'flip', 100, 'dark', plr = 2}
 mirror
-    {192, 3, outExpo, 0, 'z', -5000, 'attenuatex', -5000, 'attenuatez', -100, 'wave', 75, 'targetx1', 50, 'targetx2', -50, 'targetx3', -75, 'targetx4', -75, 'targetz2', 75, 'targetz3', 600, 'zoomz', -90, 'rotationx', 314.15 / 2, 'confusionxoffset', 0, 'parabolaz'}
+    {192, 1, outExpo, 0, 'z', -5000, 'attenuatex', -5000, 'attenuatez', 50, 'brake', 50, 'wave', 75, 'targetx1', 50, 'targetx2', -50, 'targetx3', -75, 'targetx4', -75, 'targetz2', 75, 'targetz3', 600, 'zoomz', -90, 'rotationx', 314.15 / 2, 'confusionxoffset', 0, 'parabolaz'}
 ease
-    {192, 1, outExpo, -10, 'dizzy', 100, 'arrowpath', 200, 'arrowpathgirth', 100, 'drunk', 50, 'drunkperiod', 0.75, 'xmod', 300, 'drawsize', -150, 'holdgirth'}
+    {192, 1, outExpo, -10, 'dizzy', 100, 'arrowpath', 200, 'arrowpathgirth', 100, 'drunk', 50, 'drunkperiod', 0.85, 'xmod', 300, 'drawsize', -150, 'holdgirth'}
     {192, 32, linear, 360 * 2, 'rotationy', 314.15 * 4, 'confusionzoffset'}
     {216, 2, linear, 0, 'arrowpath'}
     {220, 4, linear, 0, 'stealth', plr = 1}
@@ -589,12 +590,14 @@ ease
     {329.25, 1, bell, 400, 'zoomz'}
     {329.75, 1, bell, 400, 'zoomz'}
     {330.25, 1, bell, 400, 'zoomz'}
+    {327.25, 1, bell, 100, 'flip'}
     {328.25, 0.5, inOutExpo, 100, 'reverse'}
     {328.75, 0.5, inOutExpo, 0, 'reverse'}
     {329.25, 0.5, inOutExpo, 100, 'reverse'}
     {329.75, 0.5, inOutExpo, 0, 'reverse'}
     {330.25, 0.5, inOutExpo, 100, 'reverse'}
-    {330.5, 1, inOutExpo, 0, 'reverse'}
+    {330.5, 1, inOutExpo, 0, 'reverse', 0, 'skewx'}
+    {331, 2, pop, -50, 'flip'}
     {331.5, 1, inQuad, 360 * 4, 'rotationy', -314.15 * 8, 'confusionyoffset', 100, 'reverse'}
     {331.5, 1, tap, 0.5, 'xmod', 100, 'tornado', -500, 'tinyz', 400, 'zoomz'}
     {332, 2, spike, 200, 'mini'}
@@ -602,8 +605,8 @@ ease
     {332.5, 1, inOutExpo, 0, 'reverse', plr = 1}
     {332.5, 1, inOutExpo, 100, 'reverse', plr = 2}
 mirror
-    {324, 2, bell, -15, 'rotationy'}
-    {326, 2, bell, -15, 'rotationy'}
+    {324, 2, bell, -15, 'rotationy', -200, 'movex'}
+    {326, 2, bell, -15, 'rotationy', 200, 'movex'}
     {323.75, 1, bell, 50, 'noteskewx', -50, 'noteskewy', -50, 'skewx'}
     {324.25, 1, bell, -50, 'noteskewx', 50, 'noteskewy', 50, 'skewx'}
     {324.75, 1, bell, 50, 'noteskewx', -50, 'noteskewy', -50, 'skewx'}
@@ -695,14 +698,14 @@ set
     {344, 100, 'halgun'}
     {350, 0, 'halgun'}
 ease
-    {335, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', 30, 'rotationx', -30, 'rotationy', 1600, 'zoomz'}
-    {336, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', 30, 'rotationx', 30, 'rotationy', 1600, 'zoomz'}
-    {337, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', -30, 'rotationx', -30, 'rotationy', 1600, 'zoomz'}
-    {337.75, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', -30, 'rotationx', 30, 'rotationy', 1600, 'zoomz'}
-    {339, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', 30, 'rotationx', -30, 'rotationy', 1600, 'zoomz'}
-    {340, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', 30, 'rotationx', 30, 'rotationy', 1600, 'zoomz'}
-    {340.75, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', -30, 'rotationx', -30, 'rotationy', 1600, 'zoomz'}
-    {341.5, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', -30, 'rotationx', 30, 'rotationy', 1600, 'zoomz'}
+    {335, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', 30, 'rotationx', -30, 'rotationy', 1600, 'zoomz', 400, 'movex'}
+    {336, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', 30, 'rotationx', 30, 'rotationy', 1600, 'zoomz', -400, 'movex'}
+    {337, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', -30, 'rotationx', -30, 'rotationy', 1600, 'zoomz', 400, 'movex'}
+    {337.75, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', -30, 'rotationx', 30, 'rotationy', 1600, 'zoomz', -400, 'movex'}
+    {339, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', 30, 'rotationx', -30, 'rotationy', 1600, 'zoomz', 400, 'movex'}
+    {340, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', 30, 'rotationx', 30, 'rotationy', 1600, 'zoomz', -400, 'movex'}
+    {340.75, 2, spike, 150, 'movey', 70, 'zoomy', 45, 'rotationz', -30, 'rotationx', -30, 'rotationy', 1600, 'zoomz', 400, 'movex'}
+    {341.5, 2, spike, 150, 'movey', 70, 'zoomy', -45, 'rotationz', -30, 'rotationx', 30, 'rotationy', 1600, 'zoomz', -400, 'movex'}
     {343, 1, tap, 6, 'xmod'}
     {343.5, 1, inOutExpo, 100, 'dark'}
     {343.5, 1, inOutExpo, -10, 'dizzy', 50, 'tipsy', 50, 'drunk', 45, 'flip', 350, 'movey', 1000, 'attenuatex', 1000, 'attenuatez', 100, 'arrowpath', 100, 'hideholds', -0, 'tinyz', 75, 'tornado', 300, 'tornadoperiod', 75, 'tornadoz', 100, 'tornadozperiod', -50, 'brake', 00, 'wave', 0.5, 'xmod', 100, 'mini', 0, 'movey', 100, 'dizzyholds', 800, 'zoomz'}

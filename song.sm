@@ -6,7 +6,7 @@
 #ARTISTTRANSLIT:;
 #GENRE:;
 #CREDIT:;
-#BANNER:;
+#BANNER:bn.png; //Photo credited to Nicola Samori
 #BACKGROUND:;
 #LYRICSPATH:;
 #CDTITLE:;
@@ -28,9 +28,9 @@
 //---------------dance-single - [SPOILERS]----------------
 #NOTES:
      dance-single:
-     [SPOILERS]:
+     kinosudo:
      Challenge:
-     1:
+     15:
      0.433,0.645,0.251,0.550,0.051:
 0000
 0000
